@@ -6,9 +6,10 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  EC2_USER: ec2-user
-  EC2_HOST: 44.216.119.132
-  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  ECS_CLUSTER: cb-cluster
+  CONTAINER_NAME: wr
+  ECS_SERVICE: cb-service
+  ECS_TD: .github/workflows/td.json
   ECR_REPOSITORY: 381492290017.dkr.ecr.us-east-1.amazonaws.com/wr
 
 permissions:
@@ -44,27 +45,61 @@ jobs:
     needs: build-and-push
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Deploy to AWS EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.EC2_HOST }}
-          username: ${{ env.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker login -u AWS -p $(aws ecr get-login-password --region ${{ env.AWS_REGION }}) ${{ env.ECR_REPOSITORY }}
-            docker pull ${{ env.ECR_REPOSITORY }}:latest
-            docker stop webapp || true
-            docker rm webapp || true
-            docker run -d \
-              --name webapp \
-              -p 80:8000 \
-              -e "SECRET_KEY=${{ secrets.SECRET_KEY }}" \
-              -e DB_NAME=${{ secrets.DB_NAME }} \
-              -e DB_USER=${{ secrets.DB_USER }} \
-              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              -e DB_HOST=${{ secrets.DB_HOST }} \
-              -e DB_PORT=${{ secrets.DB_PORT }} \
-              -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
-              ${{ env.ECR_REPOSITORY }}:latest
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+#    - name: Configure AWS credentials
+#      uses: aws-actions/configure-aws-credentials@v2
+#      with:
+#        role-to-assume: arn:aws:iam::381492290017:role/ECRAccessGithubRole
+#        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-1
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: $ECR_REPOSITORY:latest
+        environment-variables: |
+          "SECRET_KEY=${{ secrets.SECRET_KEY }}"
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          REDIS_HOST=${{ secrets.REDIS_HOST }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: false
+
+
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Deploy to AWS EC2
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ env.EC2_HOST }}
+#          username: ${{ env.EC2_USER }}
+#          key: ${{ secrets.EC2_SSH_KEY }}
+#          script: |
+#            docker login -u AWS -p $(aws ecr get-login-password --region ${{ env.AWS_REGION }}) ${{ env.ECR_REPOSITORY }}
+#            docker pull ${{ env.ECR_REPOSITORY }}:latest
+#            docker stop webapp || true
+#            docker rm webapp || true
+#            docker run -d \
+#              --name webapp \
+#              -p 80:8000 \
+#              -e "SECRET_KEY=${{ secrets.SECRET_KEY }}" \
+#              -e DB_NAME=${{ secrets.DB_NAME }} \
+#              -e DB_USER=${{ secrets.DB_USER }} \
+#              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+#              -e DB_HOST=${{ secrets.DB_HOST }} \
+#              -e DB_PORT=${{ secrets.DB_PORT }} \
+#              -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
+#              ${{ env.ECR_REPOSITORY }}:latest

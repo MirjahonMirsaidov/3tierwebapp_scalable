@@ -25,7 +25,7 @@ COPY . /code/
 WORKDIR /code/src
 
 # Expose the port the app runs on
-EXPOSE 8000
+EXPOSE 3000
 
 # Run the migrations and then run the development server
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:3000"]
