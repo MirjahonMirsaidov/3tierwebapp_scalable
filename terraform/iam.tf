@@ -1,3 +1,52 @@
+resource "aws_iam_role" "ecr_access_github_role" {
+  name = "ECRAccessGithubRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = "arn:aws:iam::381492290017:oidc-provider/token.actions.githubusercontent.com"
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+          },
+          StringLike = {
+            "token.actions.githubusercontent.com:sub": "repo:MirjahonMirsaidov/*"
+          }
+        }
+      }
+    ]
+  })
+}
+
+
+import {
+  to = aws_iam_role.ecr_access_github_role
+  id = "ECRAccessGithubRole"
+}
+
+
+resource "aws_iam_role_policy" "allow_pass_role" {
+  name   = "allowPassRole"
+  role   = aws_iam_role.ecr_access_github_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "iam:PassRole"
+        Effect = "Allow"
+        Resource = "arn:aws:iam::123456789012:role/web-server-role"
+      }
+    ]
+  })
+}
+
+
 resource "aws_iam_role" "ecs_task_role" {
   name = "web-server-role"
 
