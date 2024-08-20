@@ -13,6 +13,12 @@ resource "aws_ecs_task_definition" "app" {
     cpu                      = var.fargate_cpu
     memory                   = var.fargate_memory
     container_definitions    = jsonencode([{
+    environment = [
+      {
+        name  = "SECRET_KEY"
+        value = "oeqxw7*rzfsks1*x3$a25epc!wi=8a$3a)pg(^yf9f_l3o_zhd"
+      }
+    ]
     name            = "cb-app"
     image           = aws_ecr_repository.wr.repository_url
     pu                      = tonumber(var.fargate_cpu)

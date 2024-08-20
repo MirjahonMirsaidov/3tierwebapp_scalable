@@ -14,7 +14,12 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "SECRET_KEY",
+                    "value": "oeqxw7*rzfsks1*x3$a25epc!wi=8a$3a)pg(^yf9f_l3o_zhd"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "logConfiguration": {
@@ -42,10 +47,16 @@
             "name": "ecs.capability.execution-role-awslogs"
         },
         {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
         },
         {
             "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
@@ -64,7 +75,7 @@
     ],
     "cpu": "1024",
     "memory": "2048",
-    "registeredAt": "2024-08-20T17:21:02.573Z",
+    "registeredAt": "2024-08-20T18:12:01.038Z",
     "registeredBy": "arn:aws:iam::381492290017:user/ichigo",
     "tags": []
 }
