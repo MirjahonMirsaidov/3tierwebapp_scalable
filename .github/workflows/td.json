@@ -33,7 +33,7 @@
         }
     ],
     "family": "cb-app-task",
-    "taskRoleArn": "arn:aws:iam::381492290017:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::381492290017:role/web-server-role",
     "executionRoleArn": "arn:aws:iam::381492290017:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "volumes": [],
@@ -74,7 +74,7 @@
     ],
     "cpu": "1024",
     "memory": "2048",
-    "registeredAt": "2024-08-20T18:12:01.038Z",
+    "registeredAt": "2024-08-20T18:44:53.436Z",
     "registeredBy": "arn:aws:iam::381492290017:user/ichigo",
     "tags": []
 }

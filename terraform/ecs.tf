@@ -6,7 +6,7 @@ resource "aws_ecs_cluster" "main" {
 
 resource "aws_ecs_task_definition" "app" {
     family                   = "cb-app-task"
-    task_role_arn = "arn:aws:iam::381492290017:role/ecsTaskExecutionRole"
+    task_role_arn = aws_iam_role.ecs_task_role.arn
     execution_role_arn       = "arn:aws:iam::381492290017:role/ecsTaskExecutionRole"
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
@@ -57,5 +57,5 @@ resource "aws_ecs_service" "main" {
         container_port   = var.app_port
     }
 
-    depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
+    depends_on = [aws_alb_listener.front_end]
 }
