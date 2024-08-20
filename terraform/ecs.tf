@@ -6,7 +6,8 @@ resource "aws_ecs_cluster" "main" {
 
 resource "aws_ecs_task_definition" "app" {
     family                   = "cb-app-task"
-    execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+    task_role_arn = "arn:aws:iam::381492290017:role/ecsTaskExecutionRole"
+    execution_role_arn       = "arn:aws:iam::381492290017:role/ecsTaskExecutionRole"
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
     cpu                      = var.fargate_cpu
