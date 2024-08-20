@@ -73,13 +73,13 @@ jobs:
     - name: Debug Rendered Task Definition
       run: cat ${{ steps.task-def-1.outputs.task-definition }}
 
-#    - name: Deploy Amazon ECS task definition
-#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#      with:
-#        task-definition: ${{ env.ECS_TD }}
-#        service: ${{ env.ECS_SERVICE }}
-#        cluster: ${{ env.ECS_CLUSTER }}
-#        wait-for-service-stability: false
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: false
 
 
 
