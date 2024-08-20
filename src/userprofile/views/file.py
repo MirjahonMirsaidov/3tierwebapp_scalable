@@ -13,11 +13,11 @@ class FileListGenericView(ListAPIView):
     serializer_class = FileListSerializer
 
     def get_queryset(self):
-        files = cache.get("files_queryset")
-        if not files:
-            files = FileUpload.objects.all()
-            cache.set("files_queryset", files, 60)
-            print("Cache miss")
-        else:
-            print("Cache hit")
+        # files = cache.get("files_queryset")
+        # if not files:
+        #     files = FileUpload.objects.all()
+        #     cache.set("files_queryset", files, 60)
+        #     print("Cache miss")
+        # else:
+        #     print("Cache hit")
         return FileUpload.objects.all()

@@ -151,23 +151,23 @@ REST_FRAMEWORK = {
 }
 
 # Websocket channel layers
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis", 6379)],
-        },
-    },
-}
-
-# Cache settings
-REDIS_HOST = env('REDIS_HOST', str)
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}",
-    }
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("redis", 6379)],
+#         },
+#     },
+# }
+#
+# # Cache settings
+# REDIS_HOST = env('REDIS_HOST', str)
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#         "LOCATION": f"redis://{REDIS_HOST}",
+#     }
+# }
 
 # Simple JWT settings
 SIMPLE_JWT = {
