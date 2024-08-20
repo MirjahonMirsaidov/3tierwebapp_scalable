@@ -16,7 +16,6 @@ resource "aws_ecs_task_definition" "app" {
     environment = [
       {
         name  = "SECRET_KEY"
-        value = "oeqxw7*rzfsks1*x3$a25epc!wi=8a$3a)pg(^yf9f_l3o_zhd"
       }
     ]
     name            = "cb-app"
