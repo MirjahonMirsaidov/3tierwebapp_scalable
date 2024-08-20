@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "app" {
     memory                   = var.fargate_memory
     container_definitions    = jsonencode([{
     name            = "cb-app"
-    image           = aws_ecr_repository.wr.name
+    image           = aws_ecr_repository.wr.repository_url
     pu                      = tonumber(var.fargate_cpu)
     memory                   = tonumber(var.fargate_memory)
     networkMode     = "awsvpc"
