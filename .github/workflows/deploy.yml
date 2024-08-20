@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: us-east-1
   ECS_CLUSTER: cb-cluster
-  CONTAINER_NAME: wr
+  CONTAINER_NAME: cb-app
   ECS_SERVICE: cb-service
   ECS_TD: .github/workflows/td.json
   ECR_REPOSITORY: 381492290017.dkr.ecr.us-east-1.amazonaws.com/wr
