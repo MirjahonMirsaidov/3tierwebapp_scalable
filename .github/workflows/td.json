@@ -29,7 +29,8 @@
         }
     ],
     "family": "cb-app-task",
-    "executionRoleArn": "arn:aws:iam::381492290017:role/role-name",
+    "taskRoleArn": "arn:aws:iam::381492290017:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::381492290017:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "volumes": [],
     "status": "ACTIVE",
@@ -42,6 +43,9 @@
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
@@ -60,7 +64,7 @@
     ],
     "cpu": "1024",
     "memory": "2048",
-    "registeredAt": "2024-08-20T16:52:07.679Z",
+    "registeredAt": "2024-08-20T17:21:02.573Z",
     "registeredBy": "arn:aws:iam::381492290017:user/ichigo",
     "tags": []
 }
