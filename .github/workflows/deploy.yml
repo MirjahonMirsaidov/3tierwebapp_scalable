@@ -48,31 +48,31 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Print Secret
-      run: echo "secret --------- ${{ secrets.SECRET_KEY }}"
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::381492290017:role/ECRAccessGithubRole
+        aws-region: ${{ env.AWS_REGION }}
 
-#    - name: Configure AWS credentials
-#      uses: aws-actions/configure-aws-credentials@v2
-#      with:
-#        role-to-assume: arn:aws:iam::381492290017:role/ECRAccessGithubRole
-#        aws-region: ${{ env.AWS_REGION }}
-#
-#    - name: Fill in the new image ID in the Amazon ECS task definition
-#      id: task-def-1
-#      uses: aws-actions/amazon-ecs-render-task-definition@v1
-#      with:
-#        task-definition: ${{ env.ECS_TD }}
-#        container-name: ${{ env.CONTAINER_NAME }}
-#        image: $ECR_REPOSITORY:latest
-#        environment-variables: |
-#          "SECRET_KEY=${{ secrets.SECRET_KEY }}"
-#          DB_NAME=${{ secrets.DB_NAME }}
-#          DB_USER=${{ secrets.DB_USER }}
-#          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-#          DB_HOST=${{ secrets.DB_HOST }}
-#          DB_PORT=${{ secrets.DB_PORT }}
-#          REDIS_HOST=${{ secrets.REDIS_HOST }}
-#
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-1
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: $ECR_REPOSITORY:latest
+        environment-variables: |
+          "SECRET_KEY=${{ secrets.SECRET_KEY }}"
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          REDIS_HOST=${{ secrets.REDIS_HOST }}
+
+    - name: Debug Rendered Task Definition
+      run: cat ${{ steps.task-def-1.outputs.task-definition }}
+
 #    - name: Deploy Amazon ECS task definition
 #      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
 #      with:
@@ -80,6 +80,17 @@ jobs:
 #        service: ${{ env.ECS_SERVICE }}
 #        cluster: ${{ env.ECS_CLUSTER }}
 #        wait-for-service-stability: false
+
+
+
+
+
+
+
+
+
+
+
 
 
 #      - name: Checkout
