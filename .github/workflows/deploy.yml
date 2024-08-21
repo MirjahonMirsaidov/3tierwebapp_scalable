@@ -42,7 +42,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build-and-push
+#    needs: build-and-push
 
     steps:
     - name: Checkout code
@@ -80,40 +80,3 @@ jobs:
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: false
-
-
-
-
-
-
-
-
-
-
-
-
-
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#      - name: Deploy to AWS EC2
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ env.EC2_HOST }}
-#          username: ${{ env.EC2_USER }}
-#          key: ${{ secrets.EC2_SSH_KEY }}
-#          script: |
-#            docker login -u AWS -p $(aws ecr get-login-password --region ${{ env.AWS_REGION }}) ${{ env.ECR_REPOSITORY }}
-#            docker pull ${{ env.ECR_REPOSITORY }}:latest
-#            docker stop webapp || true
-#            docker rm webapp || true
-#            docker run -d \
-#              --name webapp \
-#              -p 80:8000 \
-#              -e "SECRET_KEY=${{ secrets.SECRET_KEY }}" \
-#              -e DB_NAME=${{ secrets.DB_NAME }} \
-#              -e DB_USER=${{ secrets.DB_USER }} \
-#              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-#              -e DB_HOST=${{ secrets.DB_HOST }} \
-#              -e DB_PORT=${{ secrets.DB_PORT }} \
-#              -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
-#              ${{ env.ECR_REPOSITORY }}:latest
