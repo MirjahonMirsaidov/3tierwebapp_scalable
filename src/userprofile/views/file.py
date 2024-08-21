@@ -19,11 +19,10 @@ class FileListGenericView(ListAPIView):
 
     def get_queryset(self):
         files = cache.get("files_queryset")
-        print(files)
         if not files:
             files = FileUpload.objects.all()
             cache.set("files_queryset", files, 300)
             print("Cache miss")
         else:
             print("Cache hit")
-        return FileUpload.objects.all()
+        return files
