@@ -102,23 +102,23 @@ ASGI_APPLICATION = 'core.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DB_NAME', str),
-#         'USER': env('DB_USER', str),
-#         'PASSWORD': env('DB_PASSWORD', str),
-#         'HOST': env('DB_HOST', str),
-#         'PORT': env('DB_PORT', str),
-#     }
-# }
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "wr_test",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME', str),
+        'USER': env('DB_USER', str),
+        'PASSWORD': env('DB_PASSWORD', str),
+        'HOST': env('DB_HOST', str),
+        'PORT': env('DB_PORT', str),
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "wr_test",
+#     }
+# }
 
 
 # Password validation
@@ -151,23 +151,23 @@ REST_FRAMEWORK = {
 }
 
 # Websocket channel layers
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [("redis", 6379)],
-#         },
-#     },
-# }
-#
-# # Cache settings
-# REDIS_HOST = env('REDIS_HOST', str)
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": f"redis://{REDIS_HOST}",
-#     }
-# }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
+
+# Cache settings
+REDIS_HOST = env('REDIS_HOST', str)
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}",
+    }
+}
 
 # Simple JWT settings
 SIMPLE_JWT = {
