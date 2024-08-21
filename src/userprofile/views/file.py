@@ -16,7 +16,7 @@ class FileListGenericView(ListAPIView):
         files = cache.get("files_queryset")
         if not files:
             files = FileUpload.objects.all()
-            cache.set("files_queryset", files, 60)
+            cache.set("files_queryset", files, 300)
             print("Cache miss")
         else:
             print("Cache hit")
