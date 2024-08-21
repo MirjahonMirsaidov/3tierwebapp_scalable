@@ -1,3 +1,5 @@
+
+# Import github iam role
 resource "aws_iam_role" "ecr_access_github_role" {
   name = "ECRAccessGithubRole"
 
@@ -24,28 +26,28 @@ resource "aws_iam_role" "ecr_access_github_role" {
 }
 
 
-import {
-  to = aws_iam_role.ecr_access_github_role
-  id = "ECRAccessGithubRole"
-}
-
-
-resource "aws_iam_role_policy" "allow_pass_role" {
-  name   = "allowPassRole"
-  role   = aws_iam_role.ecr_access_github_role.id
+# Attach IAM Policy for github iam role
+resource "aws_iam_policy" "ecr_access_policy" {
+  name        = "ECRAccessPolicy"
+  description = "Provides ECR access and PassRole permissions"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "iam:PassRole"
-        Effect = "Allow"
-        Resource = "arn:aws:iam::123456789012:role/web-server-role"
+        Effect = "Allow",
+        Action = "iam:PassRole",
+        Resource = "arn:aws:iam::381492290017:role/web-server-role"
       }
     ]
   })
 }
 
+# Attach the policy to the ECRAccessGithubRole
+resource "aws_iam_role_policy_attachment" "ecr_access_policy_attachment" {
+  role       = "ECRAccessGithubRole"
+  policy_arn = aws_iam_policy.ecr_access_policy.arn
+}
 
 resource "aws_iam_role" "ecs_task_role" {
   name = "web-server-role"
@@ -81,8 +83,8 @@ resource "aws_iam_role_policy" "ecs_task_s3_policy" {
         ]
         Effect   = "Allow"
         Resource = [
-          "arn:aws:s3:::mirjahon-s3-aws",
-          "arn:aws:s3:::mirjahon-s3-aws/*"
+          "arn:aws:s3:::mirjahon-aws-s3",
+          "arn:aws:s3:::mirjahon-aws-s3/*"
         ]
       }
     ]
