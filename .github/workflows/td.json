@@ -14,11 +14,7 @@
                 }
             ],
             "essential": true,
-            "environment": [
-                {
-                    "name": "SECRET_KEY"
-                }
-            ],
+            "environment": [],
             "mountPoints": [],
             "volumesFrom": [],
             "logConfiguration": {

@@ -18,27 +18,27 @@ permissions:
   deployments: write
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: arn:aws:iam::381492290017:role/ECRAccessGithubRole
-        aws-region: ${{ env.AWS_REGION }}
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Build, tag, and push image to Amazon ECR
-      run: |
-        docker build -t $ECR_REPOSITORY:latest .
-        docker push $ECR_REPOSITORY:latest
+#  build-and-push:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - name: Checkout code
+#      uses: actions/checkout@v3
+#
+#    - name: Configure AWS credentials
+#      uses: aws-actions/configure-aws-credentials@v2
+#      with:
+#        role-to-assume: arn:aws:iam::381492290017:role/ECRAccessGithubRole
+#        aws-region: ${{ env.AWS_REGION }}
+#
+#    - name: Login to Amazon ECR
+#      id: login-ecr
+#      uses: aws-actions/amazon-ecr-login@v1
+#
+#    - name: Build, tag, and push image to Amazon ECR
+#      run: |
+#        docker build -t $ECR_REPOSITORY:latest .
+#        docker push $ECR_REPOSITORY:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -76,7 +76,7 @@ jobs:
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TD }}
+        task-definition: ${{ steps.task-def-1.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: false
