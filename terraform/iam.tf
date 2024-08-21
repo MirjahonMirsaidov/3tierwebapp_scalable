@@ -29,6 +29,19 @@ resource "aws_iam_role" "ecr_access_github_role" {
 }
 
 
+# Attach Amazon ECR full access managed policy
+resource "aws_iam_role_policy_attachment" "ecr_access_github_role_ecr_policy" {
+  role       = aws_iam_role.ecr_access_github_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
+# Attach Amazon ECS full access managed policy
+resource "aws_iam_role_policy_attachment" "ecr_access_github_role_ecs_policy" {
+  role       = aws_iam_role.ecr_access_github_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+}
+
+
 # Attach IAM Policy for github iam role
 resource "aws_iam_policy" "ecr_access_policy" {
   name        = "ECRAccessPolicy"
@@ -52,6 +65,8 @@ resource "aws_iam_role_policy_attachment" "ecr_access_policy_attachment" {
   policy_arn = aws_iam_policy.ecr_access_policy.arn
 }
 
+
+# ECS Task Role
 resource "aws_iam_role" "ecs_task_role" {
   name = "web-server-role"
 
