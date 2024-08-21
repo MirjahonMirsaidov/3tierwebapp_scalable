@@ -9,10 +9,9 @@ class FileUploadGenericView(CreateAPIView):
     serializer_class = FileUploadSerializer
 
     def perform_create(self, serializer):
-        s = serializer.save(user=self.request.user)
+        serializer.save()
         files = cache.get("files_queryset")
-        print(files)
-        return s
+        print("FILES: -----  ", len(files))
 
 
 class FileListGenericView(ListAPIView):
