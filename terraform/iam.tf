@@ -2,6 +2,9 @@
 # Import github iam role
 resource "aws_iam_role" "ecr_access_github_role" {
   name = "ECRAccessGithubRole"
+  lifecycle {
+    prevent_destroy = true
+  }
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
